@@ -181,6 +181,15 @@ export default function Destinations() {
             );
           })}
         </div>
+
+        <div className="mt-12 text-center">
+          <a
+            href="/destinations"
+            className="inline-block bg-safari-black text-white px-8 py-3 rounded-full font-bold text-lg hover:opacity-90 transition-opacity"
+          >
+            Learn More
+          </a>
+        </div>
       </div>
     </section>
   );

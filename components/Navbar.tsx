@@ -2,12 +2,24 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 
 const links = [
-  { href: "#about", label: "About" },
-  { href: "#safaris", label: "Safaris" },
-  { href: "#destinations", label: "Destinations" },
-  { href: "#contact", label: "Contact" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/safaris", label: "Our Safaris" },
+  { href: "/trekking", label: "Trekking Package" },
+  {
+    href: "/destinations",
+    label: "Destinations",
+    children: [
+      { href: "/destinations#destinations", label: "Top Destinations" },
+      { href: "/destinations#other-destinations", label: "Other Destinations" },
+    ],
+  },
+  { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
 ];
 
 function smoothScroll(id: string) {
@@ -18,15 +30,31 @@ function smoothScroll(id: string) {
 }
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+  const [scrolled, setScrolled] = useState(!isHomePage);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Immediately set scrolled state based on current page when pathname changes
+    setScrolled(!isHomePage);
+    setOpenDropdown(null);
+  }, [pathname]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // On non-homepage, always show scrolled state
+    if (!isHomePage) {
+      setScrolled(true);
+      return;
+    }
+    // On homepage, update based on scroll position
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHomePage]);
 
   const toggleMenu = () => {
     setMenuOpen((prev) => {
@@ -38,7 +66,13 @@ export default function Navbar() {
   };
 
   const handleNavClick = (href: string) => {
-    smoothScroll(href);
+    if (href.startsWith("/")) {
+      // Use Next.js router for client-side navigation
+      router.push(href);
+    } else {
+      // Smooth scroll for anchor links
+      smoothScroll(href);
+    }
     setMenuOpen(false);
     if (typeof window !== "undefined") {
       document.body.style.overflow = "";
@@ -53,17 +87,18 @@ export default function Navbar() {
             ? "bg-white shadow-sm text-safari-black"
             : "bg-transparent text-white"
         }`}
+        suppressHydrationWarning
       >
         <div className="max-w-325 mx-auto h-full px-4 md:px-6 flex items-center">
         {/* Left: Logo + Brand */}
-        <a
-          href="#top"
+        <Link
+          href="/"
           aria-label="Go to top"
           className="flex items-center gap-3 flex-1"
         >
           <div className={`rounded-full p-2 transition-all duration-300 ${
             scrolled ? "" : "bg-white"
-          }`}>
+          }`} suppressHydrationWarning>
             <Image
               src="/images/furahayao-logo.png"
               alt="FurahaYao Safaris Logo"
@@ -73,26 +108,56 @@ export default function Navbar() {
               className="rounded-lg object-contain"
             />
           </div>
-          <span className={`font-extrabold text-[1.3rem] tracking-tight transition-colors duration-300 ${
-            scrolled ? "text-safari-brown" : "text-white"
-          }`}>
-            FurahaYao Safaris
-          </span>
-        </a>
+        </Link>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-6 mr-6">
-          {links.map((l) => (
-            <button
-              key={l.href}
-              onClick={() => handleNavClick(l.href)}
-              className={`font-medium text-sm hover:opacity-70 transition-all duration-300 cursor-pointer bg-transparent border-none ${
-                scrolled ? "text-safari-brown" : "text-white"
-              }`}
-            >
-              {l.label}
-            </button>
-          ))}
+          {links.map((l) =>
+            l.children ? (
+              <div
+                key={l.href}
+                className="relative"
+                onMouseEnter={() => setOpenDropdown(l.href)}
+                onMouseLeave={() => setOpenDropdown(null)}
+              >
+                <button
+                  onClick={() => handleNavClick(l.href)}
+                  className={`font-medium text-sm hover:opacity-70 transition-all duration-300 cursor-pointer bg-transparent border-none ${
+                    scrolled ? "text-safari-brown" : "text-white"
+                  }`}
+                >
+                  {l.label}
+                </button>
+                <div className={`absolute left-0 top-full w-max rounded-xl shadow-lg overflow-hidden ${
+                  scrolled ? "bg-white" : "bg-safari-brown"
+                } ${openDropdown === l.href ? "flex" : "hidden"} flex-col z-50`}>
+                  {l.children.map((child) => (
+                    <button
+                      key={child.href}
+                      onClick={() => handleNavClick(child.href)}
+                      className={`text-left px-4 py-2 text-sm font-medium transition-all duration-300 border-b border-white/10 ${
+                        scrolled
+                          ? "text-safari-brown bg-white hover:bg-safari-yellow hover:text-white"
+                          : "text-white bg-safari-brown hover:bg-safari-yellow/90 hover:text-white"
+                      }`}
+                    >
+                      {child.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <button
+                key={l.href}
+                onClick={() => handleNavClick(l.href)}
+                className={`font-medium text-sm hover:opacity-70 transition-all duration-300 cursor-pointer bg-transparent border-none ${
+                  scrolled ? "text-safari-brown" : "text-white"
+                }`}
+              >
+                {l.label}
+              </button>
+            )
+          )}
         </div>
 
         {/* Desktop CTAs */}
@@ -110,6 +175,7 @@ export default function Navbar() {
           className="flex md:hidden flex-col gap-1.5 ml-auto mr-2 p-2 z-101 bg-transparent border-none cursor-pointer"
           aria-label="Open menu"
           onClick={toggleMenu}
+          suppressHydrationWarning
         >
           {[0, 1, 2].map((i) => (
             <span
@@ -125,6 +191,7 @@ export default function Navbar() {
                     : "-rotate-45 -translate-y-2.25"
                   : ""
               }`}
+              suppressHydrationWarning
             />
           ))}
         </button>
@@ -139,13 +206,27 @@ export default function Navbar() {
       >
         <nav className="flex flex-col gap-3 sm:gap-4 mb-6 sm:mb-8">
           {links.map((l) => (
-            <button
-              key={l.href}
-              onClick={() => handleNavClick(l.href)}
-              className="text-white text-lg sm:text-xl font-semibold text-left bg-transparent border-none cursor-pointer py-2 hover:opacity-70 transition-opacity"
-            >
-              {l.label}
-            </button>
+            <div key={l.href} className="flex flex-col gap-2">
+              <button
+                onClick={() => handleNavClick(l.href)}
+                className="text-white text-lg sm:text-xl font-semibold text-left bg-transparent border-none cursor-pointer py-2 hover:opacity-70 transition-opacity"
+              >
+                {l.label}
+              </button>
+              {l.children && (
+                <div className="flex flex-col pl-4 gap-2">
+                  {l.children.map((child) => (
+                    <button
+                      key={child.href}
+                      onClick={() => handleNavClick(child.href)}
+                      className="text-white/80 text-base text-left bg-transparent border-none cursor-pointer py-1 hover:text-white transition-opacity"
+                    >
+                      {child.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </nav>
         <div className="flex flex-col gap-3 sm:gap-4">

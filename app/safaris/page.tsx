@@ -45,31 +45,25 @@ const safaris: SafariCard[] = [
 
 function EnquireButton() {
   return (
-    <button
-      onClick={() => {
-        if (typeof window !== "undefined") {
-          document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-        }
-      }}
-      className="bg-safari-brown text-safari-black px-6 py-2 rounded-full font-bold text-sm hover:opacity-90 transition-opacity cursor-pointer"
+    <a
+      href="/contact"
+      className="bg-safari-brown text-safari-black px-6 py-2 rounded-full font-bold text-sm hover:opacity-90 transition-opacity inline-block text-center"
     >
       Enquire Now
-    </button>
+    </a>
   );
 }
 
-export default function Safaris() {
+export default function SafarisPage() {
   return (
-    <section id="safaris" className="py-12 bg-safari-brown text-white" aria-label="Safari Tours and Services">
-      <div className="max-w-325 mx-auto px-4 md:px-6">
-        <h2 className="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white">
-          Our Safaris &amp; Services
-        </h2>
-        <p className="mt-2 text-[clamp(1rem,2vw,1.2rem)] text-white leading-relaxed">
+    <main className="min-h-screen bg-safari-brown pt-22">
+      <div className="max-w-325 mx-auto px-4 py-16">
+        <h1 className="text-4xl font-bold text-white mb-4 text-center">Our Safaris & Services</h1>
+        <p className="text-xl text-white text-center mb-12 leading-relaxed">
           Discover the best ways to explore Tanzania, tailored to your interests.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 mt-8" role="list">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8" role="list">
           {safaris.map((s) => (
             <div
               key={s.title}
@@ -106,15 +100,15 @@ export default function Safaris() {
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-16 text-center">
           <a
-            href="/safaris"
+            href="/contact"
             className="inline-block bg-white text-safari-brown px-8 py-3 rounded-full font-bold text-lg hover:opacity-90 transition-opacity"
           >
-            Learn More
+            Plan Your Safari
           </a>
         </div>
       </div>
-    </section>
+    </main>
   );
 }

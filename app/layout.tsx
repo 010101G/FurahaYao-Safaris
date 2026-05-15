@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import Navbar from "@/components/Navbar";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -106,7 +107,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -114,6 +115,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${montserrat.variable} antialiased`} suppressHydrationWarning>
+        <Navbar />
         {children}
         <FloatingWhatsApp />
       </body>

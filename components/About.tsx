@@ -22,43 +22,41 @@ export default function About() {
             About FurahaYao Safaris
           </h2>
           <p className="text-[clamp(1rem,2vw,1.2rem)] text-safari-black leading-relaxed">
-            We are passionate about sharing Tanzania&apos;s wonders. Our team is
-            local, experienced, and committed to responsible travel. Every trip
-            is crafted for authenticity and comfort.
+            We are a trusted Tanzania safari tour operator committed to delivering safe,
+            seamless, and unforgettable safari experiences.
           </p>
-
-          <ul className="list-disc ml-5 text-safari-brown font-medium space-y-1">
-            <li>Personalized itineraries tailored to your preferences</li>
-            <li>Expert local guides with deep knowledge of Tanzania</li>
-            <li>Ethical wildlife encounters respecting nature and conservation</li>
-          </ul>
 
           <div>
             <h3 className="font-bold text-safari-brown text-lg block mb-2">
               Why choose us?
             </h3>
-            <ul className="flex flex-wrap gap-3">
-              {["Transparent pricing", "24/7 support", "Trusted by travelers"].map((item) => (
-                <li
-                  key={item}
-                  className="bg-safari-light text-safari-black rounded-lg px-3 py-1 text-sm font-medium"
-                >
-                  {item}
-                </li>
-              ))}
+            <ul className="list-disc ml-5 text-safari-brown font-medium space-y-2">
+              <li>Expert local safari guides with deep wildlife knowledge</li>
+              <li>Customized Tanzania safari itineraries</li>
+              <li>Competitive pricing with no hidden costs</li>
+              <li>Guaranteed departures – no cancellations</li>
+              <li>24/7 support from planning to travel</li>
             </ul>
           </div>
 
-          <button
-            onClick={() => {
-              if (typeof window !== "undefined") {
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-            className="self-start bg-safari-brown text-white px-7 py-3 rounded-full font-bold text-base hover:opacity-90 transition-opacity cursor-pointer mt-2"
-          >
-            Plan My Trip
-          </button>
+          <div className="flex gap-4 mt-2">
+            <button
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="bg-safari-brown text-white px-7 py-3 rounded-full font-bold text-base hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              Plan My Trip
+            </button>
+            <a
+              href="/about"
+              className="bg-white text-safari-brown border border-safari-brown px-7 py-3 rounded-full font-bold text-base hover:bg-safari-brown hover:text-white transition-all cursor-pointer"
+            >
+              Learn More
+            </a>
+          </div>
         </div>
 
         {/* Right: media */}

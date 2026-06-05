@@ -116,7 +116,7 @@ export const budgetSafaris: Safari[] = [
     description:
       "Classic camping adventure visiting the home of Tanzania's densest elephant population and beyond, Tarangire, Serengeti and the Ngorongoro Crater, under canvas and the African sky.",
     parks: ["Tarangire", "Serengeti", "Ngorongoro Crater"],
-    image: img("bud-4day-camping"),
+    image: "/images/stock/bud-4day-camping-v2.jpg",
   },
   {
     id: "bud-4day-lake-eyasi",
@@ -149,7 +149,7 @@ export const budgetSafaris: Safari[] = [
     description:
       "Six days of unforgettable camping across Tarangire, the Serengeti and the Ngorongoro Crater, the full northern-circuit experience at a budget-friendly price.",
     parks: ["Tarangire", "Serengeti", "Ngorongoro Crater"],
-    image: img("bud-6day-camping"),
+    image: "/images/stock/bud-6day-camping-v2.jpg",
   },
   {
     id: "bud-6day-maasai",

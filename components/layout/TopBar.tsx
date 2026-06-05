@@ -1,6 +1,5 @@
 "use client";
 
-import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { CONTACT } from "@/lib/data";
 
 export default function TopBar({ collapsed }: { collapsed: boolean }) {
@@ -23,7 +22,7 @@ export default function TopBar({ collapsed }: { collapsed: boolean }) {
           </a>
         </div>
 
-        {/* Right: socials + language */}
+        {/* Right: socials + country */}
         <div className="flex items-center gap-3 shrink-0">
           <div className="flex items-center gap-2.5">
             <a href={CONTACT.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-white transition-colors">
@@ -34,7 +33,12 @@ export default function TopBar({ collapsed }: { collapsed: boolean }) {
             </a>
             <span className="w-px h-3.5 bg-white/20" />
           </div>
-          <LanguageSwitcher tone="light" />
+          {/* Country (static — language is selected in the navbar) */}
+          <span className="flex items-center gap-1.5 font-semibold notranslate" translate="no">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/stock/flags/tz.png" alt="Tanzania flag" width={22} height={16} className="rounded-[2px] object-cover" />
+            Tanzania
+          </span>
         </div>
       </div>
     </div>

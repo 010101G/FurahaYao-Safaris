@@ -3,7 +3,7 @@ Allow: /
 Disallow: /api/
 Allow: /api/contact
 
-Sitemap: https://furahayao-safaris.com/sitemap.xml
+Sitemap: https://furahayaosafaris.com/sitemap.xml
 
 # Google Bot
 User-agent: Googlebot

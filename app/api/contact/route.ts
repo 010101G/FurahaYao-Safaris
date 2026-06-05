@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       from: `"FurahaYao Safaris Contact" <${process.env.SMTP_FROM}>`,
       to: process.env.COMPANY_EMAIL,
       replyTo: `"${fullName}" <${data.email}>`,
-      subject: `🦁 New Safari Request — ${fullName}`,
+      subject: `New Safari Request from ${fullName}`,
       html: enquiryHtml,
     });
 
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       from: `"FurahaYao Safaris" <${process.env.SMTP_FROM}>`,
       to: `"${fullName}" <${data.email}>`,
-      subject: "Your FurahaYao Safari request — we received it ✦",
+      subject: "Your FurahaYao Safari request, we received it ✦",
       html: confirmationHtml,
     });
 

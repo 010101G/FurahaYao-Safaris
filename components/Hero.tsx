@@ -1,107 +1,104 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import CTAButton from "@/components/ui/CTAButton";
+import { HERO_POSTER } from "@/lib/data";
 
-const phrases = ["Visit Tanzania", "See the Best of the World"];
+const phrases = ["the Serengeti's endless plains", "the roof of Africa", "Zanzibar's turquoise shores", "the Great Migration"];
 
-export default function Hero() {
-  const [displayed, setDisplayed] = useState("");
-  const [phraseIdx, setPhraseIdx] = useState(0);
+function useTypewriter() {
+  const [idx, setIdx] = useState(0);
   const [typing, setTyping] = useState(true);
-  const [charIdx, setCharIdx] = useState(0);
+  const [char, setChar] = useState(0);
+
+  const phrase = phrases[idx];
+  const text = phrase.slice(0, char);
 
   useEffect(() => {
-    const phrase = phrases[phraseIdx];
-    let timeout: ReturnType<typeof setTimeout>;
-
+    let t: ReturnType<typeof setTimeout>;
     if (typing) {
-      if (charIdx <= phrase.length) {
-        setDisplayed(phrase.substring(0, charIdx));
-        timeout = setTimeout(() => setCharIdx((c) => c + 1), 60);
+      if (char < phrase.length) {
+        t = setTimeout(() => setChar((c) => c + 1), 55);
       } else {
-        timeout = setTimeout(() => setTyping(false), 1200);
+        t = setTimeout(() => setTyping(false), 1500);
       }
     } else {
-      if (charIdx > 0) {
-        setDisplayed(phrase.substring(0, charIdx - 1));
-        timeout = setTimeout(() => setCharIdx((c) => c - 1), 30);
+      if (char > 0) {
+        t = setTimeout(() => setChar((c) => c - 1), 28);
       } else {
-        timeout = setTimeout(() => {
-          setPhraseIdx((p) => (p + 1) % phrases.length);
+        t = setTimeout(() => {
+          setIdx((p) => (p + 1) % phrases.length);
           setTyping(true);
-        }, 400);
+        }, 350);
       }
     }
+    return () => clearTimeout(t);
+  }, [char, typing, phrase.length]);
 
-    return () => clearTimeout(timeout);
-  }, [charIdx, phraseIdx, typing]);
+  return text;
+}
+
+export default function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const word = useTypewriter();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section className="relative min-h-screen flex items-stretch p-0">
-      {/* Background image (shows while video loads) */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://res.cloudinary.com/dtvuqa0i2/image/upload/v1768550116/Safari_6_dekouj.jpg')",
-        }}
-      />
-
-      {/* Hero video */}
-      <video
-        className="hero-fadein-video absolute inset-0 w-full h-full object-cover z-[1]"
-        src="/videos/IMG_1813_b0atce.mov"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-      />
-
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/50 z-[2]" />
+    <section ref={ref} className="relative min-h-[100svh] flex items-center overflow-hidden">
+      {/* Parallax media */}
+      <motion.div style={{ y }} className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${HERO_POSTER}')` }} />
+        <video
+          className="hero-fadein-video absolute inset-0 w-full h-full object-cover"
+          src="/videos/IMG_1813_b0atce.mov"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-safari-black/60 via-safari-black/35 to-safari-black/80" />
+      </motion.div>
 
       {/* Content */}
-      <div className="relative z-[3] max-w-325 mx-auto px-4 md:px-6 flex flex-col justify-center min-h-screen hero-content-animate">
-
-        <h1 className="text-white text-[clamp(1.5rem,5vw,3.5rem)] font-bold leading-tight mb-3 sm:mb-4">
-          Tanzania Awaits<br />
-          <span className="text-safari-brown">Your Adventure</span>
-        </h1>
-
-        {/* Typewriter */}
-        <div className="mb-6 sm:mb-8">
-          <span className="typewriter-text font-semibold text-white text-base sm:text-lg font-sans">
-            {displayed}
+      <motion.div style={{ opacity }} className="relative z-10 max-w-[1260px] mx-auto w-full px-4 md:px-6 pt-28 pb-20">
+        <div className="max-w-3xl hero-content-animate">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/15 px-4 py-2 text-xs font-semibold tracking-[0.2em] uppercase text-white">
+            <span className="w-2 h-2 rounded-full bg-safari-gold animate-pulse" />
+            Tailor-made Tanzania safaris
           </span>
-        </div>
 
-        <p className="bg-safari-brown text-safari-black rounded-full px-4 sm:px-5 py-2 inline-block font-semibold mb-6 sm:mb-8 self-start text-sm sm:text-base">
-          Expert local guides · Ethical wildlife encounters
-        </p>
+          <h1 className="mt-6 text-white text-[clamp(1.9rem,5vw,3.75rem)] font-extrabold leading-[1.06] text-balance">
+            <span className="whitespace-nowrap">Your adventure into</span>
+            <br />
+            <span className="text-safari-gold">wild Tanzania</span>
+          </h1>
 
-        <div className="flex flex-wrap gap-3 sm:gap-4">
-          <button
-            onClick={() => {
-              if (typeof window !== "undefined") {
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-            className="bg-safari-brown text-white px-5 sm:px-7 py-2 sm:py-3 rounded-full font-bold text-sm sm:text-base hover:opacity-90 transition-opacity cursor-pointer"
-          >
-            Plan My Trip
-          </button>
-          <button
-            onClick={() => {
-              if (typeof window !== "undefined") {
-                document.getElementById("safaris")?.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-            className="bg-safari-brown text-safari-black px-5 sm:px-7 py-2 sm:py-3 rounded-full font-bold text-sm sm:text-base hover:opacity-90 transition-opacity cursor-pointer"
-          >
-            Explore Safaris
-          </button>
+          <p className="mt-5 text-white/85 text-[clamp(1.05rem,2.2vw,1.4rem)] font-medium min-h-[1.8em]">
+            Witness <span className="text-safari-gold typewriter-text">{word}</span>
+          </p>
+
+          <p className="mt-4 max-w-xl text-white/70 leading-relaxed">
+            Expert local guides, ethical wildlife encounters and itineraries
+            designed entirely around you, from the savannah to the summit to the sea.
+          </p>
+
+          <div className="mt-9 flex flex-wrap gap-4">
+            <CTAButton href="/contact" variant="primary" size="lg">Plan My Trip</CTAButton>
+            <CTAButton href="/safaris" variant="light" size="lg" arrow={false}>Explore Safaris</CTAButton>
+          </div>
         </div>
+      </motion.div>
+
+      {/* Scroll hint */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden sm:flex flex-col items-center gap-2">
+        <span className="text-white/50 text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+        <span className="relative w-6 h-10 rounded-full border-2 border-white/30 grid justify-center pt-2">
+          <span className="w-1 h-1 rounded-full bg-white" style={{ animation: "scroll-hint 1.8s ease-in-out infinite" }} />
+        </span>
       </div>
     </section>
   );

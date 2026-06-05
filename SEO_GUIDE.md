@@ -185,7 +185,7 @@ Long-tail Keywords:
 ## 📞 Contact Information
 
 For SEO questions or improvements:
-- Email: info@furahayao.com
+- Email: info@furahayaosafaris.com
 - Phone: +255755392290
-- Website: https://furahayao-safaris.com
+- Website: https://furahayaosafaris.com
 

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import Navbar from "@/components/Navbar";
+import SideRail from "@/components/ui/SideRail";
+import GoogleTranslate from "@/components/ui/GoogleTranslate";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -33,11 +34,11 @@ export const metadata: Metadata = {
   icons: {
     icon: "/images/furahayao-logo.png",
   },
-  metadataBase: new URL("https://furahayao-safaris.com"),
+  metadataBase: new URL("https://furahayaosafaris.com"),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://furahayao-safaris.com",
+    url: "https://furahayaosafaris.com",
     title: "FurahaYao Safaris - Tanzania Safari Tours & Experiences",
     description:
       "Discover Tanzania's wonders with FurahaYao Safaris. Personalized safari itineraries, expert local guides, ethical wildlife encounters.",
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
     images: ["/images/furahayao-logo.png"],
   },
   alternates: {
-    canonical: "https://furahayao-safaris.com",
+    canonical: "https://furahayaosafaris.com",
   },
   robots: {
     index: true,
@@ -82,10 +83,10 @@ export default function RootLayout({
     "@type": "TravelAgency",
     name: "FurahaYao Safaris",
     description:
-      "Experience Tanzania's wonders with FurahaYao Safaris — personalized itineraries, expert local guides, and ethical wildlife encounters.",
-    url: "https://furahayao-safaris.com",
+      "Experience Tanzania's wonders with FurahaYao Safaris, personalized itineraries, expert local guides, and ethical wildlife encounters.",
+    url: "https://furahayaosafaris.com",
     telephone: "+255755392290",
-    email: "info@furahayao.com",
+    email: "info@furahayaosafaris.com",
     address: {
       "@type": "PostalAddress",
       addressCountry: "TZ",
@@ -117,7 +118,8 @@ export default function RootLayout({
       <body className={`${montserrat.variable} antialiased`} suppressHydrationWarning>
         <Navbar />
         {children}
-        <FloatingWhatsApp />
+        <SideRail />
+        <GoogleTranslate />
       </body>
     </html>
   );

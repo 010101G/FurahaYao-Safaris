@@ -2,25 +2,33 @@ import {
   Body,
   Container,
   Head,
-  Hr,
   Html,
+  Hr,
+  Img,
   Link,
   Section,
   Text,
 } from "@react-email/components";
+import { LOGO_URL, CONTACT } from "@/lib/data";
 
 interface ConfirmationEmailProps {
   firstName: string;
   email: string;
 }
 
-export const ConfirmationEmail = ({ firstName, email }: ConfirmationEmailProps) => (
+export const ConfirmationEmail = ({ firstName }: ConfirmationEmailProps) => (
   <Html lang="en">
     <Head />
     <Body style={bodyStyle}>
       <Container style={containerStyle}>
         <Section style={headerStyle}>
-          <Text style={emojiStyle}>🦁</Text>
+          <Img
+            src={LOGO_URL}
+            width="64"
+            height="64"
+            alt="FurahaYao Safaris"
+            style={logoStyle}
+          />
           <Text style={badgeStyle}>FurahaYao Safaris</Text>
           <Text style={titleStyle}>
             Your Journey <span style={accentStyle}>Begins</span>
@@ -36,8 +44,8 @@ export const ConfirmationEmail = ({ firstName, email }: ConfirmationEmailProps) 
           </Text>
           <Text style={bodyTextStyle}>
             In the meantime, feel free to reach us at{" "}
-            <Link href="mailto:info@safariyao.com" style={emailLinkStyle}>
-              info@safariyao.com
+            <Link href={`mailto:${CONTACT.email}`} style={emailLinkStyle}>
+              {CONTACT.email}
             </Link>
             .
           </Text>
@@ -71,9 +79,12 @@ const headerStyle = {
   border: "1px solid rgba(201, 169, 110, 0.2)",
 };
 
-const emojiStyle = {
-  fontSize: "42px",
-  margin: "0 0 16px",
+const logoStyle = {
+  display: "block",
+  margin: "0 auto 16px",
+  borderRadius: "14px",
+  background: "#ffffff",
+  padding: "8px",
 };
 
 const badgeStyle = {

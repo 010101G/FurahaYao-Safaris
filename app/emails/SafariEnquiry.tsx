@@ -4,10 +4,12 @@ import {
   Head,
   Hr,
   Html,
+  Img,
   Link,
   Section,
   Text,
 } from "@react-email/components";
+import { LOGO_URL } from "@/lib/data";
 
 interface SafariFormData {
   firstName: string;
@@ -79,7 +81,7 @@ export const SafariEnquiry = ({ data }: SafariEnquiryProps) => {
   const fullName = `${data.firstName} ${data.lastName}`.trim();
   const datesLine =
     data.exactDates === "Yes"
-      ? `${data.startDate || "—"} → ${data.endDate || "—"}`
+      ? `${data.startDate || ", "} → ${data.endDate || ", "}`
       : data.departurePeriod || "Flexible";
 
   return (
@@ -88,6 +90,7 @@ export const SafariEnquiry = ({ data }: SafariEnquiryProps) => {
       <Body style={bodyStyle}>
         <Container style={containerStyle}>
           <Section style={headerStyle}>
+            <Img src={LOGO_URL} width="60" height="60" alt="FurahaYao Safaris" style={logoStyle} />
             <Text style={headerBadgeStyle}>✦ &nbsp; FurahaYao Safaris &nbsp; ✦</Text>
             <Text style={headerTitleStyle}>
               New Safari <span style={accentStyle}>Enquiry</span>
@@ -110,7 +113,7 @@ export const SafariEnquiry = ({ data }: SafariEnquiryProps) => {
               </div>
               <div style={travellersRightCell}>
                 <Text style={heardFromLabelStyle}>Heard via</Text>
-                <Text style={heardFromValueStyle}>{data.heardFrom || "—"}</Text>
+                <Text style={heardFromValueStyle}>{data.heardFrom || ", "}</Text>
               </div>
             </div>
           </Section>
@@ -159,7 +162,7 @@ export const SafariEnquiry = ({ data }: SafariEnquiryProps) => {
                   <span style={dreamSafariTitleStyle}>Dream Safari</span>
                 </div>
                 <div style={dreamSafariBodyCell}>
-                  <p style={dreamSafariTextStyle}>"{data.dreamSafari}"</p>
+                  <p style={dreamSafariTextStyle}>&ldquo;{data.dreamSafari}&rdquo;</p>
                 </div>
               </div>
             )}
@@ -199,6 +202,14 @@ const headerStyle = {
   padding: "48px 40px 40px",
   textAlign: "center" as const,
   borderRadius: "20px 20px 0 0",
+};
+
+const logoStyle = {
+  display: "block",
+  margin: "0 auto 16px",
+  borderRadius: "14px",
+  background: "#ffffff",
+  padding: "8px",
 };
 
 const headerBadgeStyle = {
